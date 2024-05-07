@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Encryption and Decryption</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body {
+            background-color: #f8f8f8;
+            margin-top: 50px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #3d3c3c;
+
+        }
+        h5 {
+            text-align: center;
+            color: #3d3c3c;
+
+        }
+
+        label {
+            font-weight: bold;
+            color: #3d3c3c;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-group button {
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .output-label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>SafeCrypt</h2>
+        <h5>AES Encryption and Decryption</h5>
+        <label for="mode">Pilih Mode:</label><br>
+        <select id="mode">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+        </select><br><br>
+        <label for="key">Masukan Kunci:</label><br>
+        <input type="text" id="key" placeholder="Masukan Kunci AES disini..."><br><br>
+        <label for="inputText">Plainteks:</label><br>
+        <textarea id="inputText" rows="4" cols="50" placeholder="Masukan Teks disini..."></textarea><br><br>
+        <div class="button-group">
+            <button id="actionButton" class="button-primary" onclick="performAction()">Encrypt</button>
+            <button class="button-outline" onclick="clearFields()">Clear</button>
+        </div>
+        <div class="output-label">Chiperteks:</div>
+        <textarea id="outputText" rows="4" cols="50" readonly></textarea>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script>
+        function performAction() {
+            var mode = document.getElementById("mode").value;
+            var key = document.getElementById("key").value;
+            var inputText = document.getElementById("inputText").value;
+
+            if (!key) {
+                alert("Please enter a key.");
+                return;
+            }
+
+            if (mode === "encrypt") {
+                var encryptedText = aesEncrypt(inputText, key);
+                document.getElementById("outputText").value = encryptedText;
+            } else {
+                var decryptedText = aesDecrypt(inputText, key);
+                document.getElementById("outputText").value = decryptedText;
+            }
+        }
+
+        function aesEncrypt(text, key) {
+            var encrypted = CryptoJS.AES.encrypt(text, key);
+            return encrypted.toString();
+        }
+
+        function aesDecrypt(ciphertext, key) {
+            var decrypted = CryptoJS.AES.decrypt(ciphertext, key);
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+
+        function clearFields() {
+            document.getElementById("inputText").value = "";
+            document.getElementById("outputText").value = "";
+        }
+    </script>
+</body>
+</html>
